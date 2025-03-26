@@ -1,0 +1,23 @@
+
+<div class="grid mb-6 md:grid-cols-2 loan-container">
+
+  <div class="input-container">
+    <h2>Numero de préstamo</h2>
+    <span>{{loan.id}}</span>
+  </div>
+
+  <div class="input-container">
+    <h2>Estatus</h2>
+    <span>{{loan.status}}</span>
+  </div>
+
+  <div class="input-container">
+    <h2>Fecha del préstamo</h2>
+    <span>{{loan.createdAt | date: 'dd/MM/YYYY'}}</span>
+  </div>
+
+  <div class="input-container">
+    <h2>Monto</h2>
+    <span>{{loan.paymentPlan.commissionAmount}}</span>
+  </div>
+</div>

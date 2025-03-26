@@ -1,0 +1,127 @@
+<div class="container">
+  <aplz-ui-logo size="lg"></aplz-ui-logo>
+
+  <form [formGroup]="form" (ngSubmit)="register()">
+    <div class="grid mb-6 md:grid-cols-1">
+
+      <div class="input-container" >
+        <label class="input-label"for="email" class="block mb-2 text-sm font-medium text-dark"
+        [class]="{'alert-text': emailActivated && !form.controls.email.valid}">
+          Correo *
+        </label>
+        <input
+          (click)="emailActivated = true"
+          type="email"
+          id="email"
+          class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+          placeholder="Correo"
+          formControlName="email"
+        />
+      </div>
+
+      <div class="input-container">
+        <label class="input-label"for="password" class="block mb-2 text-sm font-medium text-dark"
+        [class]="{'alert-text': passwordActivated && !form.controls.password.valid}">
+          Password *
+        </label>
+
+        <input
+          (click)="passwordActivated = true"
+          type="password"
+          id="password"
+          class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+          placeholder="password"
+          formControlName="password"
+        />
+      </div>
+
+      <div class="input-container">
+        <label class="input-label"for="username" class="block mb-2 text-sm font-medium text-dark"
+        [class]="{'alert-text': firstNameActivated && !form.controls.firstName.valid}">
+          Nombre(s) *
+        </label>
+        <input
+          (click)="firstNameActivated = true"
+          type="text"
+          id="firstname"
+          class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+          placeholder="Nombre(s)"
+          formControlName="firstName"
+        />
+      </div>
+
+      <div class="input-container">
+        <label class="input-label"for="lastname" class="block mb-2 text-sm font-medium text-dark"
+        [class]="{'alert-text': lastNameActivated && !form.controls.lastName.valid}">
+          Apellido paterno *
+        </label>
+
+        <input
+          (click)="lastNameActivated = true"
+          type="text"
+          id="lastname"
+          class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+          placeholder="Apellido paterno"
+          formControlName="lastName"
+        />
+      </div>
+
+      <div class="input-container">
+        <label class="input-label"for="lastname" class="block mb-2 text-sm font-medium text-dark"
+        [class]="{'alert-text': secondLastNameActivated && !form.controls.secondLastName.valid}">
+          Apellido materno *
+        </label>
+
+        <input
+        (click)="secondLastNameActivated = true"
+          type="text"
+          id="secondLastName"
+          class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+          placeholder="Apellido materno"
+          formControlName="secondLastName"
+        />
+      </div>
+
+      <div class="input-container">
+        <label class="input-label"for="dateOfBirth" class="block mb-2 text-sm font-medium text-dark" [class]="{'alert-text': !this.validateAge() && this.form.controls.dateOfBirth.value.length > 0}">
+          Fecha de nacimiento *
+        </label>
+
+        <input
+          type="date"
+          id="dateOfBirth"
+          class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+          placeholder="DD/MM/AAAA"
+          formControlName="dateOfBirth"
+        />
+      </div>
+
+      <div class="input-container">
+        @if (!this.validateAge() && this.form.controls.dateOfBirth.value.length > 0) {
+          <span class="alert-text">Para continuar con el regristro necesita ser mayor de edad.</span>
+        }
+
+        @if (this.errorMessage.length > 0) {
+          <span class="alert-text">{{errorMessage}}</span>
+        }
+      </div>
+
+
+    </div>
+
+    <button class="aplzButton"
+      aplzButton
+      aplzAppearance="stroked"
+      aplzColor="dark"
+      size="md"
+      type="submit"
+      [disabled]="!form.valid || !validateAge()"
+      >
+      Crear cuenta
+    </button>
+
+  </form>
+
+
+
+</div>

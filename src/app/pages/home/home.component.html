@@ -1,0 +1,72 @@
+<form [formGroup]="form">
+  <div class="grid mb-6 md:grid-cols-1">
+
+    <div class="loan-form">
+      <label for="customerId" class="block mb-2 text-sm font-medium text-dark">
+         @if (!form.controls.customerId.valid && form.controls.customerId.value.length > 0) {
+          <span class="alert-text">Debe ingresar un id válido</span>
+        } @else {
+          <Span>ID</Span>
+        }
+      </label>
+      <input appUuidValidator
+        type="text"
+        id="customerId"
+        class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
+        placeholder="customerId"
+        formControlName="customerId"
+      />
+    </div>
+
+
+
+
+
+
+    <div class="loan-form">
+
+      <label for="amount" class="block mb-2 text-sm font-medium text-dark" [class]="{'alert-text': form.controls.amount.value < 1000 || form.controls.amount.value > 20000}">
+        Puede solicitar desde mil hasta 20 mil pesos
+      </label>
+
+      <div class="currency-input">
+        <span class="currency-symbol">$</span>
+        <input
+        type="number"
+
+        id="amount"
+        class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5 no-spinners"
+        placeholder="1000.00"
+        formControlName="amount"
+      />
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+  <button class="aplzButton"
+    aplzButton
+    [disabled]="!form.valid || form.controls.amount.value < 1000 || form.controls.amount.value > 20000"
+    aplzAppearance="stroked"
+    aplzColor="dark"
+    size="md"
+    type="submit"
+    (click)="createLoan()"
+    >
+    Registrar prestamo
+  </button>
+
+  @if (showModal) {
+    <app-dialog title="Mi Modal Personalizado" [loanId]="loanId" (visibleChange)="toggleModal()">
+    </app-dialog>
+  }
+
+</form>
