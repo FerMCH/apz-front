@@ -51,8 +51,8 @@
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.dev.ts"
+                "replace": "environment.ts",
+                "with": "environment.dev.ts"
               }]
             }
           },
