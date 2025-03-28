@@ -1,4 +1,4 @@
-import { AfterContentInit, Component } from '@angular/core';
+import { AfterContentInit, Component, OnChanges } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AplazoButtonComponent } from '@apz/shared-ui/button';
 import { AplazoDashboardComponents } from '@apz/shared-ui/dashboard';
@@ -20,7 +20,7 @@ import { AuthService } from '../services/auth.service';
     RouterLink,
   ],
 })
-export class LayoutComponent implements AfterContentInit {
+export class LayoutComponent implements OnChanges {
 
   readonly appRoutes = ROUTE_CONFIG;
 
@@ -32,7 +32,7 @@ export class LayoutComponent implements AfterContentInit {
     private readonly authService: AuthService, private readonly route: Router) {
 
   }
- ngAfterContentInit(): void {
+  ngOnChanges(): void {
     this.subscription = this.layoutService.currentMessage$.subscribe(
       layout => this.layout = layout
     );

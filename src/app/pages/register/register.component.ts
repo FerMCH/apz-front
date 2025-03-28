@@ -128,7 +128,6 @@ export class RegisterComponent {
         .subscribe({
           next:(response) => {
           sessionStorage.setItem("userId", response.id);
-          this.authService.isAuthenticatedSubject.next(true);
           this.route.navigate([`${ROUTE_CONFIG.app}/${ROUTE_CONFIG.home}`]);
           },
           error:(err) => {

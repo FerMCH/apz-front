@@ -22,7 +22,6 @@ export class LoanComponent implements OnInit {
 
   ngOnInit() {
     this.loanService.getLoan(this.loanId).subscribe(response => {
-      console.log(response);
       this.loan =response;
       this.layoutService.messageSource.next('Préstamo');
     })
