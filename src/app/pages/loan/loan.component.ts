@@ -18,12 +18,12 @@ export class LoanComponent implements OnInit {
   constructor(private readonly activatedRoute: ActivatedRoute, private readonly loanService: LoanService,
     private readonly layoutService: LayoutService ){
     this.loanId = this.activatedRoute.snapshot.queryParams['loanId'];
+    this.layoutService.messageSource.next('Préstamo');
    }
 
   ngOnInit() {
     this.loanService.getLoan(this.loanId).subscribe(response => {
       this.loan =response;
-      this.layoutService.messageSource.next('Préstamo');
     })
   }
 

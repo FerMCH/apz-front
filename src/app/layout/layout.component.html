@@ -4,7 +4,10 @@
       class="flex flex-grow flex-shrink-0 justify-between items-center w-full"
     >
       <h2 class="font-medium text-2xl">
-        {{layout}}
+        @if (layout.length > 0) {
+          {{layout}}
+        }
+
       </h2>
 
       <button aplzButton aplzAppearance="basic" size="md" class="items-center" (click)="clickLogo()">

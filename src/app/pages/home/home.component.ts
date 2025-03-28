@@ -1,4 +1,4 @@
-import { AfterContentInit, Component } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AplazoButtonComponent } from '@apz/shared-ui/button';
 import { uuidValidator } from '../../directives/uuidValidator.directive';
@@ -13,23 +13,15 @@ import { DialogComponent } from './dialog/dialog.component';
   templateUrl: './home.component.html',
   imports: [ReactiveFormsModule, AplazoButtonComponent, DialogComponent],
 })
-export class HomeComponent implements AfterContentInit {
+export class HomeComponent {
 
   showModal = false;
   loanId = '';
   dialogTittle = '';
   dialogError = false;
 
-  constructor(private readonly layoutService: LayoutService, private readonly loanService: LoanService,
-      private readonly customerService: CustomerService) {
-
-    this.customerService.getCustomer(sessionStorage.getItem('userId') as string).
-    subscribe(response => {
-    });
-  }
-
-  ngAfterContentInit(): void {
-    this.layoutService.messageSource.next('Home');
+  constructor(private readonly layoutService: LayoutService, private readonly loanService: LoanService) {
+    this.layoutService.messageSource.next('Historial');
   }
 
   readonly customerId = new FormControl<string>(sessionStorage.getItem('userId') as string, {

@@ -89,6 +89,7 @@
 
         <input
           type="date"
+          [class]="{'date-void': form.controls.dateOfBirth.value.length == 0}"
           id="dateOfBirth"
           class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
           placeholder="DD/MM/AAAA"
