@@ -17,16 +17,18 @@ import { ROUTE_CONFIG } from '../../config/routes.config';
   selector: 'app-register',
   templateUrl: './register.component.html',
   imports: [ReactiveFormsModule, AplazoButtonComponent, AplazoLogoComponent],
-  providers: [CustomerService]
+  providers: [CustomerService],
 })
 export class RegisterComponent {
-
-  constructor(private readonly customerService: CustomerService, private readonly authService: AuthService, private readonly route: Router) {}
-
+  constructor(
+    private readonly customerService: CustomerService,
+    private readonly authService: AuthService,
+    private readonly route: Router
+  ) {}
 
   emailActivated = false;
 
-  errorMessage: string = "";
+  errorMessage: string = '';
 
   readonly email = new FormControl<string>('', {
     nonNullable: true,
@@ -75,12 +77,6 @@ export class RegisterComponent {
     dateOfBirth: this.dateOfBirth,
   });
 
-  activarAlerta(value: boolean) {
-    console.log('Input clickeado');
-    this.emailActivated = true;
-    console.log(value);
-  }
-
   validateAge(): boolean {
     if (this.form.controls.dateOfBirth.value.length == 0) {
       return false;
@@ -92,55 +88,51 @@ export class RegisterComponent {
     const months = today.getMonth() - dateOfBirth.getMonth();
     const days = today.getDate() - dateOfBirth.getDate();
 
-    if(years > 18) {
+    if (years > 18) {
       return true;
     }
-    if(years == 18 && months > 0) {
+    if (years == 18 && months > 0) {
       return true;
     }
-    if(years == 18 && months == 0 && days > 0) {
+    if (years == 18 && months == 0 && days > 0) {
       return true;
     }
-    return false
-
+    return false;
   }
 
   register(): void {
-    this.errorMessage = "";
+    this.errorMessage = '';
 
-    this.authService.registerUser(
-      {
+    this.authService
+      .registerUser({
         username: this.form.controls.email.value,
-        password: this.form.controls.password.value
-      }
-    )
-    .subscribe({
-      next:(token) => {
-        sessionStorage.setItem("token", token.token);
-        this.customerService.createCustomer(
-          {
-            firstName: this.form.controls.firstName.value,
-            lastName: this.form.controls.lastName.value,
-            secondLastNme: this.form.controls.secondLastName.value,
-            dateOfBirth: this.form.controls.dateOfBirth.value
-          }
-        )
-        .subscribe({
-          next:(response) => {
-          sessionStorage.setItem("userId", response.id);
-          this.route.navigate([`${ROUTE_CONFIG.app}/${ROUTE_CONFIG.home}`]);
-          },
-          error:(err) => {
-            this.errorMessage = "Algo salió mal. Intenta más tarde.";
-          }
-        });
-      },
-      error:(err) => {
-        this.errorMessage = "Algo salió mal. Intenta más tarde.";
-      }
-    });
-
-
+        password: this.form.controls.password.value,
+      })
+      .subscribe({
+        next: (token) => {
+          sessionStorage.setItem('token', token.token);
+          this.customerService
+            .createCustomer({
+              firstName: this.form.controls.firstName.value,
+              lastName: this.form.controls.lastName.value,
+              secondLastNme: this.form.controls.secondLastName.value,
+              dateOfBirth: this.form.controls.dateOfBirth.value,
+            })
+            .subscribe({
+              next: (response) => {
+                sessionStorage.setItem('userId', response.id);
+                this.route.navigate([
+                  `${ROUTE_CONFIG.app}/${ROUTE_CONFIG.home}`,
+                ]);
+              },
+              error: (err) => {
+                this.errorMessage = 'Algo salió mal. Intenta más tarde.';
+              },
+            });
+        },
+        error: (err) => {
+          this.errorMessage = 'Algo salió mal. Intenta más tarde.';
+        },
+      });
   }
-
 }

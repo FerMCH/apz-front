@@ -5,13 +5,12 @@ import { Observable } from 'rxjs';
 import { CustomerRequest } from '../entities/customerRequest';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
-
   private readonly baseEndPoint = environment.customer;
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   createCustomer(data: CustomerRequest): Observable<any> {
     return this.http.post(this.baseEndPoint, data);
@@ -20,7 +19,4 @@ export class CustomerService {
   getCustomer(id: string): Observable<any> {
     return this.http.get(`${this.baseEndPoint}/${id}`);
   }
-
-
-
 }

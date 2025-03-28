@@ -9,22 +9,21 @@ interface JwtPayload {
 
 function isJwtValid(token: string): boolean {
   try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-          return false;
-      }
-      const payload = JSON.parse(atob(parts[1])) as JwtPayload;
-      if (!payload.exp) {
-          return false;
-      }
-      const currentTime = Math.floor(Date.now() / 1000);
-      return currentTime < payload.exp;
-  } catch (error) {
-      console.error('Error al validar el JWT:', error);
+    const parts = token.split('.');
+    if (parts.length !== 3) {
       return false;
+    }
+    const payload = JSON.parse(atob(parts[1])) as JwtPayload;
+    if (!payload.exp) {
+      return false;
+    }
+    const currentTime = Math.floor(Date.now() / 1000);
+    return currentTime < payload.exp;
+  } catch (error) {
+    console.error('Error al validar el JWT:', error);
+    return false;
   }
 }
-
 
 export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
@@ -40,5 +39,4 @@ export const authGuardLogin: CanActivateFn = () => {
     return router.createUrlTree([`${ROUTE_CONFIG.app}/${ROUTE_CONFIG.home}`]);
   }
   return true;
-
 };

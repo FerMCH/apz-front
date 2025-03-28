@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewChecked, Component, DoCheck, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AplazoButtonComponent } from '@apz/shared-ui/button';
 import { AplazoDashboardComponents } from '@apz/shared-ui/dashboard';
@@ -20,34 +20,32 @@ import { AuthService } from '../services/auth.service';
     RouterLink,
   ],
 })
-export class LayoutComponent implements OnInit {
 
+export class LayoutComponent implements OnInit {
   readonly appRoutes = ROUTE_CONFIG;
 
   layout: string = '';
   subscription: Subscription;
   loanEnable = false;
 
-  constructor(private readonly layoutService: LayoutService,
-    private readonly authService: AuthService, private readonly route: Router) {
+  constructor(
+    private readonly layoutService: LayoutService,
+    private readonly authService: AuthService,
+    private readonly route: Router
+  ) {}
 
-  }
+
   ngOnInit(): void {
-
     setTimeout(() => {
       this.subscription = this.layoutService.currentMessage$.subscribe(
-
-        layout => {
+        (layout) => {
           this.layout = layout;
-          console.log('mmm');
-          //
         }
       );
     }, 0);
-
   }
 
   clickLogo(): void {
-    this.authService.logout()
+    this.authService.logout();
   }
 }
