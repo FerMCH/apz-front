@@ -20,6 +20,9 @@ export class DialogComponent {
   @Input()
   loanId: string = '';
 
+  @Input()
+  error: boolean = false;
+
   @Output()
   visibleChange = new EventEmitter<boolean>();
 

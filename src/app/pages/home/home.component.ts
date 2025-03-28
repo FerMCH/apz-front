@@ -17,6 +17,8 @@ export class HomeComponent implements AfterContentInit {
 
   showModal = false;
   loanId = '';
+  dialogTittle = '';
+  dialogError = false;
 
   constructor(private readonly layoutService: LayoutService, private readonly loanService: LoanService,
       private readonly customerService: CustomerService) {
@@ -56,10 +58,19 @@ export class HomeComponent implements AfterContentInit {
         customerId: this.form.controls.customerId.value,
         amount: this.form.controls.amount.value
       }
-    ).subscribe(response => {
-      this.loanId = response.id;
-      this.toggleModal();
-      })
+    ).subscribe({
+      next:(response) => {
+        this.loanId = response.id;
+        this.dialogTittle = 'Se ha registrado el numero préstamo';
+        this.dialogError = false;
+        this.toggleModal();
+        },
+      error:(err) => {
+        this.dialogTittle = 'Estamos teniendo dificultades, por favor, intente más tarde';
+        this.dialogError = true;
+        this.toggleModal();
+      }
+    });
     }
 
 

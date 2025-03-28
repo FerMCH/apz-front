@@ -44,12 +44,6 @@
       </div>
     </div>
 
-
-
-
-
-
-
   </div>
 
   <button class="aplzButton"
@@ -65,7 +59,7 @@
   </button>
 
   @if (showModal) {
-    <app-dialog title="Mi Modal Personalizado" [loanId]="loanId" (visibleChange)="toggleModal()">
+    <app-dialog title="Mi Modal Personalizado" [error]="dialogError" [title]="dialogTittle" [loanId]="loanId" (visibleChange)="toggleModal()">
     </app-dialog>
   }
 

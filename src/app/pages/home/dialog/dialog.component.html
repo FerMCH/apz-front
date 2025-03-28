@@ -1,32 +1,51 @@
 <div class="modal-overlay" (click)="close()">
   <div class="modal-content animation" >
     <div class="grid mb-6 md:grid-cols-1">
-      <h1>Se ha registrado el numero préstamo</h1>
+      <h1 [class]="{'alert-text': error}">{{title}}</h1>
 
     </div>
 
-    <div class="grid mb-6 md:grid-cols-2">
+    @if (error) {
+
+      <div class="grid mb-6 md:grid-cols-1">
+        <button class="aplzButton"
+        aplzButton
+        aplzAppearance="stroked"
+        aplzColor="dark"
+        size="md"
+        type="submit"
+        (click)="close()"
+        >
+        Continuar
+      </button>
+      </div>
+
+    } @else {
+      <div class="grid mb-6 md:grid-cols-2">
+        <button class="aplzButton"
+        aplzButton
+        aplzAppearance="stroked"
+        aplzColor="dark"
+        size="md"
+        type="submit"
+        (click)="close()"
+        >
+        Continuar
+      </button>
+
       <button class="aplzButton"
-      aplzButton
-      aplzAppearance="stroked"
-      aplzColor="dark"
-      size="md"
-      type="submit"
-      (click)="close()"
-      >
-      Continuar
-    </button>
+        aplzButton
+        aplzAppearance="stroked"
+        aplzColor="accent"
+        size="md"
+        type="submit"
+        (click)="openLoanDetails()"
+        >
+        Ver el prestamo
+      </button>
+      </div>
+    }
 
-    <button class="aplzButton"
-      aplzButton
-      aplzAppearance="stroked"
-      aplzColor="accent"
-      size="md"
-      type="submit"
-      (click)="openLoanDetails()"
-      >
-      Ver el prestamo
-    </button>
-    </div>
+
   </div>
 </div>
