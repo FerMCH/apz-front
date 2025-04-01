@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  customer: 'http://localhost:8080/v1/customers/',
-  authApi: 'http://localhost:8080/v1/auth/',
-  loan: 'http://localhost:8080/v1/loans/'
+  customer: 'http://java_app:8080/v1/customers/',
+  authApi: 'http://java_app:8080/v1/auth/',
+  loan: 'http://java_app:8080/v1/loans/'
 };
