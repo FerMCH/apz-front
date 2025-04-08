@@ -6,11 +6,10 @@
 
       <div class="input-container" >
         <label class="input-label"for="email" class="block mb-2 text-sm font-medium text-dark"
-        [class]="{'alert-text': emailActivated && !form.controls.email.valid}">
+        [class]="{'alert-text': email.touched && !form.controls.email.valid}">
           Correo *
         </label>
         <input
-          (click)="emailActivated = true"
           type="email"
           id="email"
           class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
@@ -21,12 +20,11 @@
 
       <div class="input-container">
         <label class="input-label"for="password" class="block mb-2 text-sm font-medium text-dark"
-        [class]="{'alert-text': passwordActivated && !form.controls.password.valid}">
+        [class]="{'alert-text': password.touched && !form.controls.password.valid}">
           Password *
         </label>
 
         <input
-          (click)="passwordActivated = true"
           type="password"
           id="password"
           class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
@@ -37,11 +35,10 @@
 
       <div class="input-container">
         <label class="input-label"for="username" class="block mb-2 text-sm font-medium text-dark"
-        [class]="{'alert-text': firstNameActivated && !form.controls.firstName.valid}">
+        [class]="{'alert-text': firstName.touched && !form.controls.firstName.valid}">
           Nombre(s) *
         </label>
         <input
-          (click)="firstNameActivated = true"
           type="text"
           id="firstname"
           class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
@@ -52,12 +49,11 @@
 
       <div class="input-container">
         <label class="input-label"for="lastname" class="block mb-2 text-sm font-medium text-dark"
-        [class]="{'alert-text': lastNameActivated && !form.controls.lastName.valid}">
+        [class]="{'alert-text': lastName.touched && !form.controls.lastName.valid}">
           Apellido paterno *
         </label>
 
         <input
-          (click)="lastNameActivated = true"
           type="text"
           id="lastname"
           class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
@@ -68,12 +64,11 @@
 
       <div class="input-container">
         <label class="input-label"for="lastname" class="block mb-2 text-sm font-medium text-dark"
-        [class]="{'alert-text': secondLastNameActivated && !form.controls.secondLastName.valid}">
+        [class]="{'alert-text': secondLastName.touched && !form.controls.secondLastName.valid}">
           Apellido materno *
         </label>
 
         <input
-        (click)="secondLastNameActivated = true"
           type="text"
           id="secondLastName"
           class="bg-dark-background border border-dark-secondary rounded-lg focus:ring-special-info focus:border-special-info block w-full p-2.5"
@@ -83,7 +78,7 @@
       </div>
 
       <div class="input-container">
-        <label class="input-label"for="dateOfBirth" class="block mb-2 text-sm font-medium text-dark" [class]="{'alert-text': !this.validateAge() && this.form.controls.dateOfBirth.value.length > 0}">
+        <label class="input-label"for="dateOfBirth" class="block mb-2 text-sm font-medium text-dark" [class]="{'alert-text': !this.validateAge() && dateOfBirth.touched}">
           Fecha de nacimiento *
         </label>
 
@@ -98,12 +93,12 @@
       </div>
 
       <div class="input-container">
-        @if (!this.validateAge() && this.form.controls.dateOfBirth.value.length > 0) {
-          <span class="alert-text">Para continuar con el regristro necesita ser mayor de edad.</span>
+        @if (!this.validateAge() && dateOfBirth.touched) {
+          <span [hidden]="false" class="alert-text block mb-2 text-sm font-medium">Para continuar con el regristro necesita ser mayor de edad.</span>
         }
 
         @if (this.errorMessage.length > 0) {
-          <span class="alert-text">{{errorMessage}}</span>
+          <span class="alert-text block mb-2 text-sm font-medium">{{errorMessage}}</span>
         }
       </div>
 
@@ -122,7 +117,5 @@
     </button>
 
   </form>
-
-
 
 </div>

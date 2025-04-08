@@ -10,6 +10,8 @@ import { uuidValidator } from '../../directives/uuidValidator.directive';
 import { LayoutService } from '../../utils/layout.service';
 import { LoanService } from '../../services/loan.service';
 import { DialogComponent } from './dialog/dialog.component';
+import { Store } from '@ngrx/store';
+import { TittleActions } from '../../store/products/tittle.actions';
 
 @Component({
   standalone: true,
@@ -25,10 +27,17 @@ export class HomeComponent {
 
   constructor(
     private readonly layoutService: LayoutService,
-    private readonly loanService: LoanService
+    private readonly loanService: LoanService,
+    private readonly store: Store<{tittle: string}>
   ) {
-    this.layoutService.messageSource.next('Historial');
+    this.store.dispatch(TittleActions.updateLayout({
+      tittle: 'Home'
+    }));
+//    this.layoutService.messageSource.next('Historial');
   }
+
+
+
 
   readonly customerId = new FormControl<string>(
     sessionStorage.getItem('userId') as string,

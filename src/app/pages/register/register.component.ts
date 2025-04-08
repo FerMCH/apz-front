@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import {
   FormControl,
@@ -11,22 +12,23 @@ import { CustomerService } from '../../services/Customer.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ROUTE_CONFIG } from '../../config/routes.config';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [ReactiveFormsModule, AplazoButtonComponent, AplazoLogoComponent],
+  imports: [ReactiveFormsModule, AplazoButtonComponent, AplazoLogoComponent, CommonModule ],
   providers: [CustomerService],
 })
 export class RegisterComponent {
+
+
   constructor(
     private readonly customerService: CustomerService,
     private readonly authService: AuthService,
     private readonly route: Router
-  ) {}
-
-  emailActivated = false;
+  ) { }
 
   errorMessage: string = '';
 
@@ -35,28 +37,21 @@ export class RegisterComponent {
     validators: [Validators.required],
   });
 
-  passwordActivated = false;
 
   readonly password = new FormControl<string>('', {
     nonNullable: true,
     validators: [Validators.required],
   });
 
-  firstNameActivated = false;
-
   readonly firstName = new FormControl<string>('', {
     nonNullable: true,
     validators: [Validators.required],
   });
 
-  lastNameActivated = false;
-
   readonly lastName = new FormControl<string>('', {
     nonNullable: true,
     validators: [Validators.required],
   });
-
-  secondLastNameActivated = false;
 
   readonly secondLastName = new FormControl<string>('', {
     nonNullable: true,
