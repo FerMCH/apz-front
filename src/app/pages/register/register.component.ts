@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ROUTE_CONFIG } from '../../config/routes.config';
 import { CommonModule } from '@angular/common';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -21,20 +22,15 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule, AplazoButtonComponent, AplazoLogoComponent, CommonModule ],
   providers: [CustomerService],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy{
 
-
-  constructor(
-    private readonly customerService: CustomerService,
-    private readonly authService: AuthService,
-    private readonly route: Router
-  ) { }
+  private readonly destroy$ = new Subject<void>();
 
   errorMessage: string = '';
 
   readonly email = new FormControl<string>('', {
     nonNullable: true,
-    validators: [Validators.required],
+    validators: [Validators.required, Validators.email],
   });
 
 
@@ -72,6 +68,17 @@ export class RegisterComponent {
     dateOfBirth: this.dateOfBirth,
   });
 
+  constructor(
+    private readonly customerService: CustomerService,
+    private readonly authService: AuthService,
+    private readonly route: Router
+  ) { }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   validateAge(): boolean {
     if (this.form.controls.dateOfBirth.value.length == 0) {
       return false;
@@ -96,34 +103,27 @@ export class RegisterComponent {
   }
 
   register(): void {
-    this.errorMessage = '';
 
     this.authService
       .registerUser({
         username: this.form.controls.email.value,
         password: this.form.controls.password.value,
-      })
+      }).pipe(switchMap(response => {
+        sessionStorage.setItem('token', response.token);
+        return this.customerService
+        .createCustomer({
+          firstName: this.form.controls.firstName.value,
+          lastName: this.form.controls.lastName.value,
+          secondLastNme: this.form.controls.secondLastName.value,
+          dateOfBirth: this.form.controls.dateOfBirth.value,
+        });
+      }), takeUntil(this.destroy$))
       .subscribe({
-        next: (token) => {
-          sessionStorage.setItem('token', token.token);
-          this.customerService
-            .createCustomer({
-              firstName: this.form.controls.firstName.value,
-              lastName: this.form.controls.lastName.value,
-              secondLastNme: this.form.controls.secondLastName.value,
-              dateOfBirth: this.form.controls.dateOfBirth.value,
-            })
-            .subscribe({
-              next: (response) => {
-                sessionStorage.setItem('userId', response.id);
-                this.route.navigate([
-                  `${ROUTE_CONFIG.app}/${ROUTE_CONFIG.home}`,
-                ]);
-              },
-              error: (err) => {
-                this.errorMessage = 'Algo salió mal. Intenta más tarde.';
-              },
-            });
+        next: (response) => {
+          sessionStorage.setItem('userId', response.id);
+          this.route.navigate([
+            `${ROUTE_CONFIG.app}/${ROUTE_CONFIG.home}`,
+          ]);
         },
         error: (err) => {
           this.errorMessage = 'Algo salió mal. Intenta más tarde.';

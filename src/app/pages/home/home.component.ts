@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,12 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { AplazoButtonComponent } from '@apz/shared-ui/button';
-import { uuidValidator } from '../../directives/uuidValidator.directive';
+import { uuidValidator } from '../../directives/validators.directive';
 import { LayoutService } from '../../utils/layout.service';
 import { LoanService } from '../../services/loan.service';
 import { DialogComponent } from './dialog/dialog.component';
 import { Store } from '@ngrx/store';
 import { TittleActions } from '../../store/products/tittle.actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -19,11 +20,12 @@ import { TittleActions } from '../../store/products/tittle.actions';
   templateUrl: './home.component.html',
   imports: [ReactiveFormsModule, AplazoButtonComponent, DialogComponent],
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
   showModal = false;
   loanId = '';
   dialogTittle = '';
   dialogError = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly layoutService: LayoutService,
@@ -35,9 +37,6 @@ export class HomeComponent {
     }));
 //    this.layoutService.messageSource.next('Historial');
   }
-
-
-
 
   readonly customerId = new FormControl<string>(
     sessionStorage.getItem('userId') as string,
@@ -57,6 +56,11 @@ export class HomeComponent {
     amount: this.amount,
   });
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   toggleModal() {
     this.showModal = !this.showModal;
   }
@@ -66,7 +70,7 @@ export class HomeComponent {
       .createLoan({
         customerId: this.form.controls.customerId.value,
         amount: this.form.controls.amount.value,
-      })
+      }).pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.loanId = response.id;

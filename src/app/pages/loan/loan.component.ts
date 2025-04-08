@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoanService } from '../../services/loan.service';
 import { DatePipe } from '@angular/common';
 import { LayoutService } from '../../utils/layout.service';
 import { Store } from '@ngrx/store';
 import { TittleActions } from '../../store/products/tittle.actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-loan',
@@ -13,9 +14,11 @@ import { TittleActions } from '../../store/products/tittle.actions';
   imports: [DatePipe],
   styleUrls: ['./loan.component.css'],
 })
-export class LoanComponent implements OnInit {
+export class LoanComponent implements OnInit, OnDestroy {
   loanId = '';
   loan: any;
+  private destroy$ = new Subject<void>();
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly loanService: LoanService,
@@ -30,8 +33,14 @@ export class LoanComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loanService.getLoan(this.loanId).subscribe((response) => {
+    this.loanService.getLoan(this.loanId).pipe(takeUntil(this.destroy$))
+    .subscribe((response) => {
       this.loan = response;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
